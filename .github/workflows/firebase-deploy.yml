@@ -11,12 +11,12 @@ jobs:
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3 # Update to the latest version of actions/checkout
 
       - name: Set up Node.js
-        uses: actions/setup-node@v2
+        uses: actions/setup-node@v3 # Update to the latest version of actions/setup-node
         with:
-          node-version: '14' # Specify the Node.js version
+          node-version: '20' # Specify the Node.js version (20 is the latest as of now)
 
       - name: Install dependencies
         run: npm install
