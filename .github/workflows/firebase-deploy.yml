@@ -1,27 +1,33 @@
-name: Deploy to Firebase
+name: Firebase Deploy
 
 on:
   push:
     branches:
-      - main # or the branch you want to deploy from
+      - main # Change to your branch name if different
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v3 # Update to the latest version of actions/checkout
+    - name: Checkout code
+      uses: actions/checkout@v2
 
-      - name: Set up Node.js
-        uses: actions/setup-node@v3 # Update to the latest version of actions/setup-node
-        with:
-          node-version: '20' # Specify the Node.js version (20 is the latest as of now)
+    - name: Set up Node.js
+      uses: actions/setup-node@v2
+      with:
+        node-version: '16' # or the Node.js version you're using
 
-      - name: Install dependencies
-        run: npm install
+    - name: Install dependencies
+      run: npm install
 
-      - name: Deploy to Firebase
-        env:
-          FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
-        run: npm run deploy # Adjust this command if your deploy script is different
+    - name: Set up Firebase CLI
+      run: npm install -g firebase-tools
+
+    - name: Deploy to Firebase
+      run: |
+        echo "${{ secrets.GOOGLE_APPLICATION_CREDENTIALS }}" > ${GOOGLE_APPLICATION_CREDENTIALS}
+        firebase deploy --token "$FIREBASE_TOKEN"
+      env:
+        FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
+        GOOGLE_APPLICATION_CREDENTIALS: ${{ secrets.GOOGLE_APPLICATION_CREDENTIALS }}
